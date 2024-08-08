@@ -1,0 +1,139 @@
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Alert,
+  CircularProgress,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import { loginRequest } from "../redux/actions";
+import { useNavigate } from "react-router-dom";
+import Background from "./Background";
+
+const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, loading, error } = useSelector((state) => state.auth || {});
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+
+  const onSubmit = (data) => {
+    dispatch(loginRequest(data));
+  };
+
+  // Redirect to dashboard if login is successful
+  React.useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
+
+  return (
+    <Background>
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 400,
+          backgroundColor: "white",
+          borderRadius: 2,
+          boxShadow: 5,
+          p: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h4" gutterBottom sx={{ color: "#3f51b5" }}>
+          Login
+        </Typography>
+        <Typography
+          variant="h6"
+          color="textSecondary"
+          gutterBottom
+          sx={{
+            mb: 3,
+            fontWeight: 400,
+            textAlign: "center",
+          }}
+        >
+          Log in to your account and start organizing your tasks effortlessly.
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          sx={{ mt: 1 }}
+        >
+          <TextField
+            margin="normal"
+            fullWidth
+            label="Email"
+            {...register("email", { required: "Email is required" })}
+            error={!!errors.email}
+            helperText={errors.email ? errors.email.message : ""}
+          />
+          <TextField
+            margin="normal"
+            fullWidth
+            label="Password"
+            type={showPassword ? "text" : "password"}
+            {...register("password", { required: "Password is required" })}
+            error={!!errors.password}
+            helperText={errors.password ? errors.password.message : ""}
+            InputLabelProps={{ sx: { fontSize: "0.875rem" } }}
+            sx={{ mb: 2 }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={loading}
+          >
+            {loading ? <CircularProgress size={24} /> : "Login"}
+          </Button>
+          <Button
+            type="submit"
+            fullWidth
+            variant="outlined"
+            sx={{ mt: 1, mb: 2 }}
+            onClick={() => {
+              navigate("/register");
+            }}
+          >
+            Register
+          </Button>
+          {error && <Alert severity="error">{error}</Alert>}
+        </Box>
+      </Box>
+    </Background>
+  );
+};
+
+export default Login;
