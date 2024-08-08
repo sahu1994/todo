@@ -6,7 +6,7 @@ import {
   } from './actions';
   
   const initialState = {
-    user: "",
+    user: JSON.parse(localStorage.getItem('user')) || null,
     loading: false,
     error: null,
   };
@@ -15,6 +15,7 @@ import {
     switch (action.type) {
       case LOGIN_SUCCESS:
       case REGISTER_SUCCESS:
+        localStorage.setItem('user', JSON.stringify(action.payload));
         return {
           ...state,
           user: action.payload,
