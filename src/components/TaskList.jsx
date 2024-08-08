@@ -32,8 +32,8 @@ const TaskList = () => {
 
   return (
     <Box sx={{ minHeight: '100vh', padding: 3 }}>
-      <Typography variant="h3" gutterBottom color="#fafafa" textAlign="center">
-        Task List
+      <Typography variant="h4" gutterBottom color="#1a1a1a" textAlign="center">
+        TODO List
       </Typography>
       {loading ? (
         <Box display="flex" justifyContent="center" alignItems="center" height="100px">

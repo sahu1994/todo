@@ -13,6 +13,8 @@ import {
   fetchTasksSuccess,
   fetchTasksFailure,
   fetchTasksRequest,
+  LOGOUT_SUCCESS,
+  logout,
 } from "./actions";
 
 import axios from "../services/axios";
@@ -75,6 +77,14 @@ function* deleteTaskSaga(action) {
   }
 }
 
+function* logoutUser(action) {
+  try {
+    yield put(logout);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default function* authSaga() {
   yield takeLatest(FETCH_TASKS_REQUEST, fetchTasksSaga);
   yield takeLatest(ADD_TASK, addTaskSaga);
@@ -82,4 +92,5 @@ export default function* authSaga() {
   yield takeLatest(DELETE_TASK, deleteTaskSaga);
   yield takeLatest(LOGIN_REQUEST, handleLogin);
   yield takeLatest(REGISTER_REQUEST, handleRegister);
+  yield takeLatest(LOGOUT_SUCCESS, logoutUser);
 }
