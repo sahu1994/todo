@@ -69,7 +69,7 @@ const TaskList = () => {
   const handleAddComment = (taskId, _task) => {
     const updatedTasks = tasks.map((task) => {
       if (task._id === taskId) {
-        dispatch(updateTask(_task));
+        dispatch(updateTask({..._task }))
         return _task;
       }
       return task;
