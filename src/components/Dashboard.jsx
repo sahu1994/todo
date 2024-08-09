@@ -79,8 +79,7 @@ const Dashboard = () => {
             onClick={handleMenuOpen}
           >
             <Avatar sx={{ backgroundColor: getRandomColor() }}>
-              {/* {getInitials(JSON.parse(user.config.data).email)} */}
-              {getInitials("Girish")}
+              {getInitials(user.data?.email)}
             </Avatar>
           </IconButton>
         </Toolbar>
