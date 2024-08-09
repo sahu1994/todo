@@ -23,7 +23,7 @@ const TaskDetail = ({ task, onAddComment }) => {
 
   const handleAddComment = () => {
     if (newComment.trim()) {
-      const comments = [..._task.comments, newComment];
+      const comments = [..._task.comments, `${newComment} ${new Date().toLocaleDateString()}`];
       setTask({ ..._task, comments });
       onAddComment({ ..._task, comments });
       setNewComment("");
@@ -46,27 +46,32 @@ const TaskDetail = ({ task, onAddComment }) => {
       >
         <Tab label="Details" />
         <Tab label="Comments" />
-        <Tab label="Activity Log" />
       </Tabs>
 
       <Box mt={2}>
         {activeTab === 0 && (
           <Box>
-            <Typography variant="h6">Details</Typography>
-            {/* Include more task details like due date, priority, etc. */}
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Details
+            </Typography>
+            <Typography variant="subtitle2">{`<strong>Priority: </strong>${_task.priority}`}</Typography>
+            <Typography variant="subtitle2">{`Tags:  ${_task.tags.join(
+              ","
+            )}`}</Typography>
+            <Typography variant="subtitle2">{`Due Date:  ${_task.dueDate}`}</Typography>
           </Box>
         )}
 
         {activeTab === 1 && (
-          <Box >
-            <Typography variant="h6">Comments</Typography>
+          <Box>
+            <Typography variant="subtitle1">Comments</Typography>
             <List sx={{ maxHeight: 200, overflowY: "auto" }}>
               {_task?.comments?.map((comment, index) => (
                 <React.Fragment key={index}>
                   <ListItem>
                     <ListItemText
-                      primary={comment?.split(' ')[0]}
-                      secondary={comment?.split(' ')[1]}
+                      primary={comment?.split(" ")[0]}
+                      secondary={comment?.split(" ")[1]}
                     />
                   </ListItem>
                   {index < _task.comments.length - 1 && <Divider />}
@@ -79,29 +84,17 @@ const TaskDetail = ({ task, onAddComment }) => {
               fullWidth
               multiline
               rows={2}
-              value={newComment?.split(' ')[0]}
-              onChange={(e) => setNewComment(`${e.target.value} ${new Date().toLocaleDateString()}`)}
+              value={newComment}
+              onChange={(e) =>
+                setNewComment(
+                  e.target.value
+                )
+              }
               margin="normal"
             />
             <Button variant="contained" onClick={handleAddComment}>
               Add Comment
             </Button>
-          </Box>
-        )}
-
-        {activeTab === 2 && (
-          <Box>
-            <Typography variant="h6">Activity Log</Typography>
-            <List>
-              {task?.activityLog?.map((log, index) => (
-                <ListItem key={index}>
-                  <ListItemText
-                    primary={log.action}
-                    secondary={new Date(log.date).toLocaleString()}
-                  />
-                </ListItem>
-              ))}
-            </List>
           </Box>
         )}
       </Box>
