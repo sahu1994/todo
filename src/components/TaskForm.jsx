@@ -1,14 +1,41 @@
-import React, { useEffect } from 'react';
-import { Modal, Box, Typography, TextField, Button, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { useDispatch, useSelector } from 'react-redux';
-import { addTask, updateTask } from '../redux/actions';
+import React, { useEffect, useState } from "react";
+import {
+  Modal,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  IconButton,
+  Chip,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import CloseIcon from "@mui/icons-material/Close";
+import { useDispatch, useSelector } from "react-redux";
+import { addTask, updateTask } from "../redux/actions";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 const TaskForm = ({ currentTask, onClose, openForm }) => {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.auth);
-  const [title, setTitle] = React.useState(currentTask?.title || '');
-  const [description, setDescription] = React.useState(currentTask?.description || '');
+  const { user } = useSelector((state) => state.auth);
+  const [title, setTitle] = useState(currentTask?.title || "");
+  const [dueDate, setDueDate] = useState(dayjs(currentTask?.dueDate));
+  const [description, setDescription] = useState(
+    currentTask?.description || ""
+  );
+  const [priority, setPriority] = useState(currentTask?.priority);
+  const [tags, setTags] = useState(currentTask?.tags);
+
+  const handleAddTag = (tag) => {
+    setTags([...tags, tag]);
+  };
+
+  const handleDeleteTag = (tagToDelete) => {
+    setTags(tags.filter((tag) => tag !== tagToDelete));
+  };
 
   useEffect(() => {
     if (currentTask) {
@@ -20,12 +47,24 @@ const TaskForm = ({ currentTask, onClose, openForm }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (currentTask) {
-      dispatch(updateTask({ ...currentTask, title, description, userId: user?._id}));
+      dispatch(
+        updateTask({
+          ...currentTask,
+          priority,
+          tags,
+          dueDate,
+          title,
+          description,
+          userId: user?._id,
+        })
+      );
     } else {
-      dispatch(addTask({ title, description, userId: user?._id }));
+      dispatch(
+        addTask({ title, description, priority, tags,dueDate, userId: user?._id })
+      );
     }
-    setTitle('');
-    setDescription('');
+    setTitle("");
+    setDescription("");
     if (onClose) onClose(); // Close form after submission
   };
 
@@ -38,20 +77,30 @@ const TaskForm = ({ currentTask, onClose, openForm }) => {
     >
       <Box
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
           width: 500,
-          bgcolor: '#ffffff',
+          bgcolor: "#ffffff",
           boxShadow: 24,
-          p: 4,
-          borderRadius: 3,
+          p: 2,
+          borderRadius: 2,
         }}
       >
-        <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-          <Typography id="task-form-title" variant="h6" component="h2" color="primary">
-            {currentTask ? 'Edit Task' : 'Add Task'}
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={2}
+        >
+          <Typography
+            id="task-form-title"
+            variant="h6"
+            component="h2"
+            color="primary"
+          >
+            {currentTask ? "Edit Task" : "Add Task"}
           </Typography>
           <IconButton onClick={onClose}>
             <CloseIcon />
@@ -79,9 +128,59 @@ const TaskForm = ({ currentTask, onClose, openForm }) => {
           color="primary"
           focused
         />
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-          <Button onClick={onClose} sx={{ marginRight: 2 }}>Cancel</Button>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>Submit</Button>
+        <Select
+          sx={{ mt: 1 }}
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+          fullWidth
+          displayEmpty
+          margin="normal"
+        >
+          <MenuItem value="">Select Priority</MenuItem>
+          <MenuItem value="High">High</MenuItem>
+          <MenuItem value="Medium">Medium</MenuItem>
+          <MenuItem value="Low">Low</MenuItem>
+        </Select>
+        <Box sx={{ mt: 1 }}>
+          {tags && tags.map((tag, index) => (
+            <Chip
+              key={index}
+              label={tag}
+              onDelete={() => handleDeleteTag(tag)}
+              sx={{ margin: 0.5 }}
+            />
+          ))}
+          <TextField
+            label="Add Tag"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleAddTag(e.target.value);
+                e.target.value = "";
+                e.preventDefault();
+              }
+            }}
+            fullWidth
+            margin="normal"
+          />
+        </Box>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            sx={{ mt: 2 }}
+            label="Due Date"
+            value={dueDate}
+            onChange={(newValue) => setDueDate(newValue)}
+            renderInput={(params) => (
+              <TextField {...params} fullWidth margin="normal" />
+            )}
+          />
+        </LocalizationProvider>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", marginTop: 2 }}>
+          <Button onClick={onClose} sx={{ marginRight: 2 }}>
+            Cancel
+          </Button>
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Submit
+          </Button>
         </Box>
       </Box>
     </Modal>
