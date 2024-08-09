@@ -27,7 +27,9 @@ const Register = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { user, loading, error } = useSelector((state) => state.auth || {});
+  const { isAuthenticated, loading, error } = useSelector(
+    (state) => state.auth || {}
+  );
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleClickShowConfirmPassword = () =>
@@ -36,6 +38,10 @@ const Register = () => {
   const onSubmit = (data) => {
     dispatch(registerRequest(data));
   };
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/");
+  }, [isAuthenticated]);
 
   const password = watch("password", "");
 
@@ -165,11 +171,12 @@ const Register = () => {
             disabled={loading}
           >
             {loading ? <CircularProgress size={24} /> : "Register"}
-          </Button><Button
+          </Button>
+          <Button
             type="submit"
             fullWidth
             variant="outlined"
-            sx={{ mt: 1, mb:1}}
+            sx={{ mt: 1, mb: 1 }}
             onClick={() => {
               navigate("/");
             }}
