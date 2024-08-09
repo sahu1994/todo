@@ -22,7 +22,6 @@ const taskReducer = (state = initialState, action) => {
         tasks: state.tasks.map(task => task._id === action.payload._id ? action.payload : task),
       };
     case DELETE_TASK:
-      console.log(action)
       return { ...state, tasks: state.tasks.filter(task => task._id !== action.payload) };
     default:
       return state;

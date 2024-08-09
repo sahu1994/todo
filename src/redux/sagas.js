@@ -78,7 +78,7 @@ function* logoutUser(action) {
   try {
     yield put(logout);
   } catch (error) {
-    console.log(error);
+    return;
   }
 }
 
