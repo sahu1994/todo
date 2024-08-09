@@ -9,11 +9,12 @@ import TaskForm from './TaskForm';
 const TaskList = () => {
   const dispatch = useDispatch();
   const { tasks, loading, error } = useSelector(state => state.tasks);
+  const { user } = useSelector(state => state.auth);
   const [selectedTask, setSelectedTask] = React.useState(null);
   const [isFormOpen, setFormOpen] = React.useState(false);
 
   useEffect(() => {
-    dispatch(fetchTasksRequest());
+     dispatch(fetchTasksRequest(user?.data._id));
   }, [dispatch]);
 
   const handleDelete = (taskId) => {
@@ -45,19 +46,19 @@ const TaskList = () => {
         <Paper elevation={6} sx={{ padding: 2, borderRadius: 2, maxWidth: 800, margin: 'auto' }}>
           <List>
             {tasks.map(task => (
-              <React.Fragment key={task.id}>
+              <React.Fragment key={task?._id}>
                 <ListItem
                   sx={{
                     borderRadius: 2,
                     marginBottom: 2,
-                    bgcolor: task.completed ? '#d4edda' : '#f8d7da',
+                    bgcolor: task?.completed ? '#d4edda' : '#f8d7da',
                     transition: 'background-color 0.3s',
                     '&:hover': { bgcolor: '#f1f1f1' }
                   }}
                 >
                   <ListItemText
-                    primary={task.title}
-                    secondary={task.description}
+                    primary={task?.title}
+                    secondary={task?.description}
                     sx={{ wordWrap: 'break-word' }}
                   />
                   <ListItemSecondaryAction>
@@ -90,7 +91,7 @@ const TaskList = () => {
         Add New Task
       </Button>
       {isFormOpen && (
-        <TaskForm currentTask={selectedTask} onClose={closeForm} />
+        <TaskForm openForm={isFormOpen} currentTask={selectedTask} onClose={closeForm} />
       )}
     </Box>
   );

@@ -1,19 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Modal, Box, Typography, TextField, Button, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTask, updateTask } from '../redux/actions';
 
-const TaskForm = ({ currentTask, onClose }) => {
+const TaskForm = ({ currentTask, onClose, openForm }) => {
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth);
   const [title, setTitle] = React.useState(currentTask?.title || '');
   const [description, setDescription] = React.useState(currentTask?.description || '');
 
-  const handleSubmit = () => {
-    // Handle form submission logic here
-    onClose();
+  useEffect(() => {
+    if (currentTask) {
+      setTitle(currentTask.title);
+      setDescription(currentTask.description);
+    }
+  }, [currentTask]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (currentTask) {
+      dispatch(updateTask({ ...currentTask, title, description, userId: user.data.id }));
+    } else {
+      dispatch(addTask({ title, description, userId: user.data.id }));
+    }
+    setTitle('');
+    setDescription('');
+    if (onClose) onClose(); // Close form after submission
   };
 
   return (
     <Modal
-      open={Boolean(currentTask)}
+      open={openForm}
       onClose={onClose}
       aria-labelledby="task-form-title"
       aria-describedby="task-form-description"

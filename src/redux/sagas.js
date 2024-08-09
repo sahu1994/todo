@@ -19,9 +19,9 @@ import {
 
 import axios from "../services/axios";
 
-function* fetchTasksSaga() {
+function* fetchTasksSaga(action) {
   try {
-    const response = yield call(axios.get, "/tasks/");
+    const response = yield call(axios.get, `/tasks/${action.payload}`);
     yield put(fetchTasksSuccess(response.data.data));
   } catch (error) {
     yield put(fetchTasksFailure(error.message));
@@ -31,7 +31,7 @@ function* fetchTasksSaga() {
 function* handleLogin(action) {
   try {
     const response = yield call(axios.post, "/login", action.payload);
-    yield put(loginSuccess(response));
+    yield put(loginSuccess(response.data));
   } catch (error) {
     yield put(loginFailure(error.response?.message || "API Error"));
   }

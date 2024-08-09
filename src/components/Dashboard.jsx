@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const {user} = useSelector((state)=> state.auth)
+  const { user } = useSelector((state) => state.auth);
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const Dashboard = () => {
   const handleLogout = () => {
     handleMenuClose();
     dispatch(logout());
-    navigate('/'); 
+    navigate("/");
   };
 
   return (
@@ -79,7 +79,8 @@ const Dashboard = () => {
             onClick={handleMenuOpen}
           >
             <Avatar sx={{ backgroundColor: getRandomColor() }}>
-              {getInitials(JSON.parse(user.config.data).email)}
+              {/* {getInitials(JSON.parse(user.config.data).email)} */}
+              {getInitials("Girish")}
             </Avatar>
           </IconButton>
         </Toolbar>
@@ -93,17 +94,17 @@ const Dashboard = () => {
           onKeyDown={handleDrawerToggle}
         >
           <List>
-            <ListItem button>
+            <ListItem >
               <ListItemText primary="Home" />
             </ListItem>
-            <ListItem button>
+            <ListItem >
               <ListItemText primary="Tasks" />
             </ListItem>
-            <ListItem button>
+            <ListItem >
               <ListItemText primary="Profile" />
             </ListItem>
             <Divider />
-            <ListItem button onClick={handleLogout}>
+            <ListItem  onClick={handleLogout}>
               <ListItemText primary="Logout" />
               <LogoutIcon />
             </ListItem>

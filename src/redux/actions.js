@@ -14,7 +14,7 @@ export const ADD_TASK = "ADD_TASK";
 export const UPDATE_TASK = "UPDATE_TASK";
 export const DELETE_TASK = "DELETE_TASK";
 
-export const fetchTasksRequest = () => ({ type: FETCH_TASKS_REQUEST });
+export const fetchTasksRequest = (id) => ({ type: FETCH_TASKS_REQUEST, payload: id });
 export const fetchTasksSuccess = (tasks) => ({
   type: FETCH_TASKS_SUCCESS,
   payload: tasks,

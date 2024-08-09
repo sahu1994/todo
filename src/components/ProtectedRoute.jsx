@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
   // If user is not authenticated, redirect to login
-  if (!isAuthenticated) {
+  if (user === null) {
     return <Navigate to="/" replace />;
   }
   // If authenticated, render the children or nested routes
