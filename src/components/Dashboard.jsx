@@ -16,7 +16,6 @@ import {
   Container,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import TaskList from "./TaskList";
 import { useDispatch, useSelector } from "react-redux";
@@ -78,9 +77,9 @@ const Dashboard = () => {
             aria-label="profile"
             onClick={handleMenuOpen}
           >
-            <Avatar sx={{ backgroundColor: getRandomColor() }}>
-              {getInitials(user.data?.email)}
-            </Avatar>
+            {user && <Avatar sx={{ backgroundColor: getRandomColor() }}>
+              {getInitials(user?.email)}
+            </Avatar>}
           </IconButton>
         </Toolbar>
       </AppBar>

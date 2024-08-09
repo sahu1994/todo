@@ -12,7 +12,6 @@ import {
   registerFailure,
   fetchTasksSuccess,
   fetchTasksFailure,
-  fetchTasksRequest,
   LOGOUT_SUCCESS,
   logout,
 } from "./actions";

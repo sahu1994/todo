@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTasksRequest, deleteTask } from '../redux/actions';
-import { Box, Typography, IconButton, List, ListItem, ListItemText, ListItemSecondaryAction, Button, Paper, Divider, CircularProgress, Tooltip, Grid } from '@mui/material';
+import { Box, Typography, IconButton, List, ListItem, ListItemText, ListItemSecondaryAction, Button, Paper, Divider, CircularProgress, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import TaskForm from './TaskForm';
@@ -14,8 +14,8 @@ const TaskList = () => {
   const [isFormOpen, setFormOpen] = React.useState(false);
 
   useEffect(() => {
-     dispatch(fetchTasksRequest(user?.data._id));
-  }, [dispatch]);
+  if(user) dispatch(fetchTasksRequest(user?._id));
+  }, [dispatch, user]);
 
   const handleDelete = (taskId) => {
     dispatch(deleteTask(taskId));

@@ -1,8 +1,8 @@
 // Function to generate initials from a name
 export const getInitials = (name) => {
-    const nameArray = name.split(' ');
-    const initials = nameArray.map((word) => word[0]).join('');
-    return initials.substring(0, 2).toUpperCase(); // Only the first two letters
+    const nameArray = name?.split(' ');
+    const initials = nameArray?.map((word) => word[0]).join('');
+    return initials?.substring(0, 2)?.toUpperCase(); // Only the first two letters
   };
   
   // Function to generate a random background color
