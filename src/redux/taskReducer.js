@@ -19,7 +19,7 @@ const taskReducer = (state = initialState, action) => {
     case UPDATE_TASK:
       return {
         ...state,
-        tasks: state.tasks.map(task => task.userId === action.payload.userId ? action.payload : task),
+        tasks: state.tasks.map(task => task._id === action.payload._id ? action.payload : task),
       };
     case DELETE_TASK:
       console.log(action)
