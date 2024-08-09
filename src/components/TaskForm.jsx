@@ -20,9 +20,10 @@ const TaskForm = ({ currentTask, onClose, openForm }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (currentTask) {
-      dispatch(updateTask({ ...currentTask, title, description, userId: user.data.id }));
+      console.log(currentTask)
+      dispatch(updateTask({ ...currentTask, title, description}));
     } else {
-      dispatch(addTask({ title, description, userId: user.data.id }));
+      dispatch(addTask({ title, description, userId: user.data._id }));
     }
     setTitle('');
     setDescription('');

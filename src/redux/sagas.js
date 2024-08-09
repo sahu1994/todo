@@ -48,8 +48,7 @@ function* handleRegister(action) {
 
 function* addTaskSaga(action) {
   try {
-    const response = yield call(axios.post, "/tasks", action.payload);
-    yield put(fetchTasksSuccess(response.data)); // Refresh task list
+    yield call(axios.post, "/tasks", action.payload);
   } catch (error) {
     yield put(fetchTasksFailure(error.message));
   }
@@ -57,12 +56,7 @@ function* addTaskSaga(action) {
 
 function* updateTaskSaga(action) {
   try {
-    const response = yield call(
-      axios.put,
-      `/tasks/${action.payload._id}`,
-      action.payload
-    );
-    yield put(fetchTasksSuccess(response.data)); // Refresh task list
+    yield call(axios.put, `/tasks/${action.payload._id}`, action.payload);
   } catch (error) {
     yield put(fetchTasksFailure(error.message));
   }
@@ -70,8 +64,7 @@ function* updateTaskSaga(action) {
 
 function* deleteTaskSaga(action) {
   try {
-    yield call(axios.delete, `/tasks/${action.payload._id}`);
-    yield put(fetchTasksRequest());
+    yield call(axios.delete, `/tasks/${action.payload}`, { method: "delete" });
   } catch (error) {
     yield put(fetchTasksFailure(error.message));
   }

@@ -68,7 +68,7 @@ const TaskList = () => {
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete Task">
-                      <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(task.id)}>
+                      <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(task._id)}>
                         <DeleteIcon color="error" />
                       </IconButton>
                     </Tooltip>
