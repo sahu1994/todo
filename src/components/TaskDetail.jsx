@@ -23,7 +23,10 @@ const TaskDetail = ({ task, onAddComment }) => {
 
   const handleAddComment = () => {
     if (newComment.trim()) {
-      const comments = [..._task.comments, `${newComment} ${new Date().toLocaleDateString()}`];
+      const comments = [
+        ..._task.comments,
+        { comment: newComment, date: new Date().toLocaleDateString() },
+      ];
       setTask({ ..._task, comments });
       onAddComment({ ..._task, comments });
       setNewComment("");
@@ -54,7 +57,7 @@ const TaskDetail = ({ task, onAddComment }) => {
             <Typography variant="h6" sx={{ mb: 2 }}>
               Details
             </Typography>
-            <Typography variant="subtitle2">{`<strong>Priority: </strong>${_task.priority}`}</Typography>
+            <Typography variant="subtitle2">{`Priority: ${_task.priority}`}</Typography>
             <Typography variant="subtitle2">{`Tags:  ${_task.tags.join(
               ","
             )}`}</Typography>
@@ -66,12 +69,12 @@ const TaskDetail = ({ task, onAddComment }) => {
           <Box>
             <Typography variant="subtitle1">Comments</Typography>
             <List sx={{ maxHeight: 200, overflowY: "auto" }}>
-              {_task?.comments?.map((comment, index) => (
+              {_task?.comments?.map((item, index) => (
                 <React.Fragment key={index}>
                   <ListItem>
                     <ListItemText
-                      primary={comment?.split(" ")[0]}
-                      secondary={comment?.split(" ")[1]}
+                      primary={item.comment}
+                      secondary={item.date}
                     />
                   </ListItem>
                   {index < _task.comments.length - 1 && <Divider />}
@@ -85,11 +88,7 @@ const TaskDetail = ({ task, onAddComment }) => {
               multiline
               rows={2}
               value={newComment}
-              onChange={(e) =>
-                setNewComment(
-                  e.target.value
-                )
-              }
+              onChange={(e) => setNewComment(e.target.value)}
               margin="normal"
             />
             <Button variant="contained" onClick={handleAddComment}>
