@@ -27,7 +27,7 @@ const TaskForm = ({ currentTask, onClose, openForm }) => {
     currentTask?.description || ""
   );
   const [priority, setPriority] = useState(currentTask?.priority);
-  const [tags, setTags] = useState(currentTask?.tags);
+  const [tags, setTags] = useState(currentTask?.tags ? currentTask?.tags : []);
 
   const handleAddTag = (tag) => {
     setTags([...tags, tag]);
@@ -60,7 +60,14 @@ const TaskForm = ({ currentTask, onClose, openForm }) => {
       );
     } else {
       dispatch(
-        addTask({ title, description, priority, tags,dueDate, userId: user?._id })
+        addTask({
+          title,
+          description,
+          priority,
+          tags,
+          dueDate,
+          userId: user?._id,
+        })
       );
     }
     setTitle("");
@@ -142,14 +149,15 @@ const TaskForm = ({ currentTask, onClose, openForm }) => {
           <MenuItem value="Low">Low</MenuItem>
         </Select>
         <Box sx={{ mt: 1 }}>
-          {tags && tags.map((tag, index) => (
-            <Chip
-              key={index}
-              label={tag}
-              onDelete={() => handleDeleteTag(tag)}
-              sx={{ margin: 0.5 }}
-            />
-          ))}
+          {tags?.length > 0 &&
+            tags.map((tag, index) => (
+              <Chip
+                key={index}
+                label={tag}
+                onDelete={() => handleDeleteTag(tag)}
+                sx={{ margin: 0.5 }}
+              />
+            ))}
           <TextField
             label="Add Tag"
             onKeyDown={(e) => {

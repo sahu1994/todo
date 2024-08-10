@@ -55,9 +55,9 @@ function* addTaskSaga(action) {
 
 function* updateTaskSaga(action) {
   try {
-    const userId = action.payload.userId;
-    yield call(axios.put, `/tasks/${userId}`, {
-      userId,
+    const id = action.payload._id;
+    yield call(axios.put, `/tasks/${id}`, {
+      userId: action.payload.userId,
       title: action.payload.title,
       description: action.payload.description,
       tags: action.payload.tags,

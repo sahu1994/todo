@@ -49,7 +49,9 @@ const TaskList = () => {
   };
 
   useEffect(() => {
-    if (user) dispatch(fetchTasksRequest(user?._id));
+    if (user !== null){
+      dispatch(fetchTasksRequest(user?._id));
+    } 
   }, [dispatch, user]);
 
   const handleDelete = (taskId) => {

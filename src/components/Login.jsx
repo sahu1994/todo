@@ -24,7 +24,8 @@ const Login = () => {
   } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, loading, error } = useSelector((state) => state.auth || {});
+  const [showProgress, setShowProgress] = useState(false);
+  const { user, error } = useSelector((state) => state.auth || {});
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -32,14 +33,17 @@ const Login = () => {
 
   const onSubmit = (data) => {
     dispatch(loginRequest(data));
+    setShowProgress(true);
   };
 
   // Redirect to dashboard if login is successful
   React.useEffect(() => {
     if (user) {
       navigate("/dashboard");
+      setShowProgress(false);
     }
-  }, [user, navigate]);
+    if(error) setShowProgress(false)
+  }, [user, error, navigate]);
 
   return (
     <Background>
@@ -114,9 +118,9 @@ const Login = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            disabled={loading}
+            disabled={showProgress}
           >
-            {loading ? <CircularProgress size={24} /> : "Login"}
+            {showProgress ? <CircularProgress color="primary" size={24} /> : "Login"}
           </Button>
           <Button
             type="submit"
@@ -126,6 +130,7 @@ const Login = () => {
             onClick={() => {
               navigate("/register");
             }}
+            disabled={showProgress}
           >
             Register
           </Button>
