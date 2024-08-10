@@ -21,13 +21,13 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { isAuthenticated, loading, error } = useSelector(
+  const [showProgress, setShowProgress] = useState(false);
+  const { isAuthenticated, error } = useSelector(
     (state) => state.auth || {}
   );
 
@@ -37,13 +37,15 @@ const Register = () => {
 
   const onSubmit = (data) => {
     dispatch(registerRequest(data));
+    setShowProgress(true);
   };
 
   useEffect(() => {
-    if (isAuthenticated) navigate("/");
+    if (isAuthenticated){
+      navigate("/");
+      setShowProgress(false);
+    } 
   }, [isAuthenticated]);
-
-  const password = watch("password", "");
 
   return (
     <Background>
@@ -93,6 +95,7 @@ const Register = () => {
             margin="normal"
             fullWidth
             label="Name"
+            disabled={showProgress}
             {...register("name", { required: "Name is required" })}
             error={!!errors.name}
             helperText={errors.name ? errors.name.message : ""}
@@ -101,6 +104,7 @@ const Register = () => {
             margin="normal"
             fullWidth
             label="Email"
+            disabled={showProgress}
             {...register("email", {
               required: "Email is required",
               pattern: {
@@ -115,6 +119,7 @@ const Register = () => {
             margin="normal"
             fullWidth
             label="Password"
+            disabled={showProgress}
             type={showPassword ? "text" : "password"}
             {...register("password", { required: "Password is required" })}
             error={!!errors.password}
@@ -139,6 +144,7 @@ const Register = () => {
             margin="normal"
             fullWidth
             label="Confirm Password"
+            disabled={showProgress}
             type={showConfirmPassword ? "text" : "password"}
             {...register("passwordConfirm", {
               required: "Confirm your password",
@@ -168,15 +174,16 @@ const Register = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 1, mb: 1 }}
-            disabled={loading}
+            disabled={showProgress}
           >
-            {loading ? <CircularProgress size={24} /> : "Register"}
+            {showProgress ? <CircularProgress size={24} /> : "Register"}
           </Button>
           <Button
             type="submit"
             fullWidth
             variant="outlined"
             sx={{ mt: 1, mb: 1 }}
+            disabled={showProgress}
             onClick={() => {
               navigate("/");
             }}

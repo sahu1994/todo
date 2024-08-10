@@ -77,7 +77,7 @@ const Dashboard = () => {
             aria-label="profile"
             onClick={handleMenuOpen}
           >
-            {user && <Avatar sx={{ backgroundColor: getRandomColor() }}>
+            {user && <Avatar src={user?.photo || ''}  sx={{ backgroundColor: getRandomColor() }}>
               {getInitials(user?.email)}
             </Avatar>}
           </IconButton>

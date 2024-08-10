@@ -6,6 +6,8 @@ export const REGISTER_REQUEST = "REGISTER_REQUEST";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAILURE = "REGISTER_FAILURE";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const GOOGLE_LOGIN_SUCCESS = "GOOGLE_LOGIN_SUCCESS";
+export const GOOGLE_LOGIN_FAILURE = "GOOGLE_LOGIN_FAILURE";
 
 export const FETCH_TASKS_REQUEST = "FETCH_TASKS_REQUEST";
 export const FETCH_TASKS_SUCCESS = "FETCH_TASKS_SUCCESS";
@@ -35,6 +37,16 @@ export const loginRequest = (data) => ({
 export const loginSuccess = (user) => ({
   type: LOGIN_SUCCESS,
   payload: user,
+});
+
+export const googleLoginSuccess = (credential) => ({
+  type: GOOGLE_LOGIN_SUCCESS,
+  payload: credential,
+});
+
+export const googleLoginFailure = (error) => ({
+  type: GOOGLE_LOGIN_FAILURE,
+  payload: error,
 });
 
 export const loginFailure = (error) => ({

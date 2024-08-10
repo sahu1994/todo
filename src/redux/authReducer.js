@@ -4,6 +4,7 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
   LOGOUT_SUCCESS,
+  GOOGLE_LOGIN_FAILURE,
 } from "./actions";
 
 const userString = localStorage.getItem('user');
@@ -20,8 +21,8 @@ const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
-      localStorage.setItem('user', JSON.stringify(action.payload.data));
-      localStorage.setItem('token', action.payload.token);
+      localStorage.setItem("user", JSON.stringify(action.payload.data));
+      localStorage.setItem("token", action.payload.token);
       return {
         ...state,
         user: action.payload.data,
@@ -32,8 +33,9 @@ const authReducer = (state = initialState, action) => {
     case LOGIN_FAILURE:
     case LOGOUT_SUCCESS:
     case REGISTER_FAILURE:
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
+    case GOOGLE_LOGIN_FAILURE:
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       return {
         ...state,
         user: null,

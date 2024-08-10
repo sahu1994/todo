@@ -14,6 +14,8 @@ import {
   fetchTasksFailure,
   LOGOUT_SUCCESS,
   logout,
+  googleLoginFailure,
+  GOOGLE_LOGIN_SUCCESS,
 } from "./actions";
 
 import axios from "../services/axios";
@@ -77,6 +79,17 @@ function* deleteTaskSaga(action) {
   }
 }
 
+function* handleGoogleLogin(action) {
+  try {
+    const response = yield call(axios.post, "/auth/google", {
+      token: action.payload, //payload is credentials here
+    });
+    yield put(loginSuccess(response.data));
+  } catch (error) {
+    yield put(googleLoginFailure("Google login error"));
+  }
+}
+
 function* logoutUser(action) {
   try {
     yield put(logout);
@@ -91,6 +104,7 @@ export default function* authSaga() {
   yield takeLatest(UPDATE_TASK, updateTaskSaga);
   yield takeLatest(DELETE_TASK, deleteTaskSaga);
   yield takeLatest(LOGIN_REQUEST, handleLogin);
+  yield takeLatest(GOOGLE_LOGIN_SUCCESS, handleGoogleLogin)
   yield takeLatest(REGISTER_REQUEST, handleRegister);
   yield takeLatest(LOGOUT_SUCCESS, logoutUser);
 }
