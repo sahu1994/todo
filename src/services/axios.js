@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = "https://express-test-git-main-sahu1994s-projects.vercel.app"; 
-
 const instance = axios.create({
-  baseURL: BASE_URL, 
+  baseURL: process.env.REACT_APP_BASE_URL, 
   timeout: 10000, 
   headers: {
     'Content-Type': 'application/json',

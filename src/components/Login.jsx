@@ -32,9 +32,6 @@ const Login = () => {
   const [showProgress, setShowProgress] = useState(false);
   const { user, error, loading } = useSelector((state) => state.auth || {});
   const [showPassword, setShowPassword] = useState(false);
-  const CLIENT_ID =
-    "442561328232-1pt2k7797vl0f04mvr9jh85e26k9ephe.apps.googleusercontent.com";
-
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
   const onSubmit = (data) => {
@@ -65,7 +62,7 @@ const Login = () => {
   };
 
   return (
-    <GoogleOAuthProvider clientId={CLIENT_ID}>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <Background>
         <Box
           sx={{
