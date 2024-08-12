@@ -198,14 +198,17 @@ const TaskList = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            width:"calc(100% - 4)",
+            minHeight: 400,
             bgcolor: "background.paper",
+            alignItems: "center",
             boxShadow: 24,
             p: 4,
           }}
         >
           {selectedTask && (
             <TaskDetail
+              
               task={selectedTask}
               onAddComment={(_task) =>
                 handleAddComment(selectedTask._id, _task)

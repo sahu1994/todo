@@ -67,11 +67,11 @@ const Login = () => {
         <Box
           sx={{
             width: "100%",
-            maxWidth: 400,
+            maxWidth: 350,
             backgroundColor: "white",
             borderRadius: 2,
             boxShadow: 5,
-            p: 4,
+            p: 2,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -163,7 +163,7 @@ const Login = () => {
           <GoogleLogin
             size="large"
             logo_alignment="center"
-            width={400}
+            width={350}
             text="signup_with"
             onSuccess={handleGoogleSuccess}
             onError={handleGoogleFailure}
