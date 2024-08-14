@@ -48,6 +48,15 @@ const TaskForm = ({ currentTask, onClose, openForm }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log({
+      ...currentTask,
+      priority,
+      tags,
+      dueDate,
+      title,
+      description,
+      userId: user?._id,
+    })
     if (currentTask) {
       dispatch(
         updateTask({
@@ -120,7 +129,7 @@ const TaskForm = ({ currentTask, onClose, openForm }) => {
                 </IconButton>
               </Box>
             </Grid>
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <TextField
                 label="Title"
                 value={title}
@@ -166,7 +175,7 @@ const TaskForm = ({ currentTask, onClose, openForm }) => {
                     key={index}
                     label={tag}
                     onDelete={() => handleDeleteTag(tag)}
-                    sx={{ margin: 0.5 }}
+                    sx={{ m: 1 }}
                   />
                 ))}
               <TextField
@@ -198,9 +207,9 @@ const TaskForm = ({ currentTask, onClose, openForm }) => {
             <Grid
               xs={12}
               item
-              sx={{ display: "flex", justifyContent: "flex-end", marginTop: 2 }}
+              sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}
             >
-              <Button onClick={onClose} sx={{ marginRight: 2 }}>
+              <Button onClick={onClose} sx={{ mr: 2 }}>
                 Cancel
               </Button>
               <Button
